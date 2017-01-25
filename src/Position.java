@@ -1,11 +1,21 @@
+import java.util.ArrayList;
 
 public class Position {
 	private int i;
 	private int j;
+	private ArrayList<Position> legal_from;
+	private String direction;
 	
 	public Position(int i, int j){
 		this.i = i;
 		this.j = j;
+		legal_from = new ArrayList<Position>();
+	}
+	
+	public Position(int i, int j, String direction){
+		this.i = i;
+		this.j = j;
+		this.direction = direction;
 	}
 	
 	public int geti(){
@@ -22,5 +32,17 @@ public class Position {
 	
 	public void setj(int j){
 		this.j = j;
+	}
+	
+	public void insert_legal_from(Position position){
+		legal_from.add(position);
+	}
+	
+	public ArrayList<Position> get_legal_from(){
+		return legal_from;
+	}
+	
+	public String get_direction(){
+		return direction;
 	}
 }
