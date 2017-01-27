@@ -45,4 +45,12 @@ public class Position {
 	public String get_direction(){
 		return direction;
 	}
+	
+	@Override
+	public boolean equals(Object p) {
+	    if (((Position)p).geti() == this.geti() && ((Position)p).getj() == this.getj()) { 
+	    	return true;
+	    }
+	    else return false;
+	}
 }

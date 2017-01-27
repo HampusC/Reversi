@@ -10,13 +10,6 @@ public class Game {
 		board[4][4] = 2;
 		int round = 1;
 		
-		for(int m = 0; m < board.length; m++){
-			for(int n = 0; n < board[0].length; n++){
-				System.out.print(board[m][n]);
-			}
-			System.out.println();
-		}	
-		
 		while(round < 2){ //32
 			if(round % 2 == 0){
 				turn(board, 2);
@@ -26,28 +19,294 @@ public class Game {
 			round++;
 		}
 		
+	
+		
+	}
+	
+	static void turn(int[][] board, int player){
+		ArrayList<Position> positions = legal_moves(board, player);
 		for(int m = 0; m < board.length; m++){
 			for(int n = 0; n < board[0].length; n++){
 				System.out.print(board[m][n]);
 			}
 			System.out.println();
 		}
-		
-	}
-	
-	static void turn(int[][] board, int player){
-		ArrayList<Position> positions = legal_moves(board, player);
 		for(int i = 0; i < positions.size(); i++){
 			Position p = positions.get(i);
 			System.out.print(p.geti() + "," + p.getj() + "   ");
 			ArrayList<Position> poss = p.get_legal_from();
 			for(int j = 0; j < poss.size(); j++){
-				System.out.print(poss.get(j).geti() + "," + poss.get(j).getj() + " " + poss.get(j).get_direction());
+				System.out.print(poss.get(j).geti() + "," + poss.get(j).getj() + " " + poss.get(j).get_direction() + " ");
 			}
 			System.out.println();
 		}
-		//Calculate correct position
-		set_piece(board, positions.get(3), player);
+		set_piece(board, positions.get(2), player);
+//		positions = legal_moves(board, 2);
+//		for(int m = 0; m < board.length; m++){
+//			for(int n = 0; n < board[0].length; n++){
+//				System.out.print(board[m][n]);
+//			}
+//			System.out.println();
+//		}
+//		//Calculate correct position
+//		//set_piece(board, positions.get(3), player);
+//		
+//		for(int i = 0; i < positions.size(); i++){
+//			Position p = positions.get(i);
+//			System.out.print(p.geti() + "," + p.getj() + "   ");
+//			ArrayList<Position> poss = p.get_legal_from();
+//			for(int j = 0; j < poss.size(); j++){
+//				System.out.print(poss.get(j).geti() + "," + poss.get(j).getj() + " " + poss.get(j).get_direction() + " ");
+//			}
+//			System.out.println();
+//		}
+//		set_piece(board, positions.get(1), 2);
+//		positions = legal_moves(board, player);
+//		
+//		for(int m = 0; m < board.length; m++){
+//			for(int n = 0; n < board[0].length; n++){
+//				System.out.print(board[m][n]);
+//			}
+//			System.out.println();
+//		}
+//		for(int i = 0; i < positions.size(); i++){
+//			Position p = positions.get(i);
+//			System.out.print(p.geti() + "," + p.getj() + "   ");
+//			ArrayList<Position> poss = p.get_legal_from();
+//			for(int j = 0; j < poss.size(); j++){
+//				System.out.print(poss.get(j).geti() + "," + poss.get(j).getj() + " " + poss.get(j).get_direction() + " ");
+//			}
+//			System.out.println();
+//		}
+//		
+//		set_piece(board, positions.get(0), player);
+//		positions = legal_moves(board, 2);
+//		
+//		for(int m = 0; m < board.length; m++){
+//			for(int n = 0; n < board[0].length; n++){
+//				System.out.print(board[m][n]);
+//			}
+//			System.out.println();
+//		}
+//		for(int i = 0; i < positions.size(); i++){
+//			Position p = positions.get(i);
+//			System.out.print(p.geti() + "," + p.getj() + "   ");
+//			ArrayList<Position> poss = p.get_legal_from();
+//			for(int j = 0; j < poss.size(); j++){
+//				System.out.print(poss.get(j).geti() + "," + poss.get(j).getj() + " " + poss.get(j).get_direction() + " ");
+//			}
+//			System.out.println();
+//		}
+//		
+//		set_piece(board, positions.get(2), 2);
+//		positions = legal_moves(board, player);
+//		
+//		for(int m = 0; m < board.length; m++){
+//			for(int n = 0; n < board[0].length; n++){
+//				System.out.print(board[m][n]);
+//			}
+//			System.out.println();
+//		}
+//		for(int i = 0; i < positions.size(); i++){
+//			Position p = positions.get(i);
+//			System.out.print(p.geti() + "," + p.getj() + "   ");
+//			ArrayList<Position> poss = p.get_legal_from();
+//			for(int j = 0; j < poss.size(); j++){
+//				System.out.print(poss.get(j).geti() + "," + poss.get(j).getj() + " " + poss.get(j).get_direction() + " ");
+//			}
+//			System.out.println();
+//		}
+//		
+//		set_piece(board, positions.get(1), player);
+//		positions = legal_moves(board, 2);
+//		
+//		for(int m = 0; m < board.length; m++){
+//			for(int n = 0; n < board[0].length; n++){
+//				System.out.print(board[m][n]);
+//			}
+//			System.out.println();
+//		}
+//		for(int i = 0; i < positions.size(); i++){
+//			Position p = positions.get(i);
+//			System.out.print(p.geti() + "," + p.getj() + "   ");
+//			ArrayList<Position> poss = p.get_legal_from();
+//			for(int j = 0; j < poss.size(); j++){
+//				System.out.print(poss.get(j).geti() + "," + poss.get(j).getj() + " " + poss.get(j).get_direction() + " ");
+//			}
+//			System.out.println();
+//		}
+//		
+//		set_piece(board, positions.get(2), 2);
+//		positions = legal_moves(board, player);
+//		
+//		for(int m = 0; m < board.length; m++){
+//			for(int n = 0; n < board[0].length; n++){
+//				System.out.print(board[m][n]);
+//			}
+//			System.out.println();
+//		}
+//		for(int i = 0; i < positions.size(); i++){
+//			Position p = positions.get(i);
+//			System.out.print(p.geti() + "," + p.getj() + "   ");
+//			ArrayList<Position> poss = p.get_legal_from();
+//			for(int j = 0; j < poss.size(); j++){
+//				System.out.print(poss.get(j).geti() + "," + poss.get(j).getj() + " " + poss.get(j).get_direction() + " ");
+//			}
+//			System.out.println();
+//		}
+//		
+//		set_piece(board, positions.get(0), player);
+//		positions = legal_moves(board, 2);
+//		
+//		for(int m = 0; m < board.length; m++){
+//			for(int n = 0; n < board[0].length; n++){
+//				System.out.print(board[m][n]);
+//			}
+//			System.out.println();
+//		}
+//		for(int i = 0; i < positions.size(); i++){
+//			Position p = positions.get(i);
+//			System.out.print(p.geti() + "," + p.getj() + "   ");
+//			ArrayList<Position> poss = p.get_legal_from();
+//			for(int j = 0; j < poss.size(); j++){
+//				System.out.print(poss.get(j).geti() + "," + poss.get(j).getj() + " " + poss.get(j).get_direction() + " ");
+//			}
+//			System.out.println();
+//		}
+//		
+//		set_piece(board, positions.get(1), 2);
+//		positions = legal_moves(board, player);
+//		
+//		for(int m = 0; m < board.length; m++){
+//			for(int n = 0; n < board[0].length; n++){
+//				System.out.print(board[m][n]);
+//			}
+//			System.out.println();
+//		}
+//		for(int i = 0; i < positions.size(); i++){
+//			Position p = positions.get(i);
+//			System.out.print(p.geti() + "," + p.getj() + "   ");
+//			ArrayList<Position> poss = p.get_legal_from();
+//			for(int j = 0; j < poss.size(); j++){
+//				System.out.print(poss.get(j).geti() + "," + poss.get(j).getj() + " " + poss.get(j).get_direction() + " ");
+//			}
+//			System.out.println();
+//		}
+//		
+//		set_piece(board, positions.get(2), player);
+//		positions = legal_moves(board, 2);
+//		
+//		for(int m = 0; m < board.length; m++){
+//			for(int n = 0; n < board[0].length; n++){
+//				System.out.print(board[m][n]);
+//			}
+//			System.out.println();
+//		}
+//		for(int i = 0; i < positions.size(); i++){
+//			Position p = positions.get(i);
+//			System.out.print(p.geti() + "," + p.getj() + "   ");
+//			ArrayList<Position> poss = p.get_legal_from();
+//			for(int j = 0; j < poss.size(); j++){
+//				System.out.print(poss.get(j).geti() + "," + poss.get(j).getj() + " " + poss.get(j).get_direction() + " ");
+//			}
+//			System.out.println();
+//		}
+//		
+//		set_piece(board, positions.get(1), 2);
+//		positions = legal_moves(board, player);
+//		
+//		for(int m = 0; m < board.length; m++){
+//			for(int n = 0; n < board[0].length; n++){
+//				System.out.print(board[m][n]);
+//			}
+//			System.out.println();
+//		}
+//		for(int i = 0; i < positions.size(); i++){
+//			Position p = positions.get(i);
+//			System.out.print(p.geti() + "," + p.getj() + "   ");
+//			ArrayList<Position> poss = p.get_legal_from();
+//			for(int j = 0; j < poss.size(); j++){
+//				System.out.print(poss.get(j).geti() + "," + poss.get(j).getj() + " " + poss.get(j).get_direction() + " ");
+//			}
+//			System.out.println();
+//		}
+//		
+//		set_piece(board, positions.get(2), player);
+//		positions = legal_moves(board, 2);
+//		
+//		for(int m = 0; m < board.length; m++){
+//			for(int n = 0; n < board[0].length; n++){
+//				System.out.print(board[m][n]);
+//			}
+//			System.out.println();
+//		}
+//		for(int i = 0; i < positions.size(); i++){
+//			Position p = positions.get(i);
+//			System.out.print(p.geti() + "," + p.getj() + "   ");
+//			ArrayList<Position> poss = p.get_legal_from();
+//			for(int j = 0; j < poss.size(); j++){
+//				System.out.print(poss.get(j).geti() + "," + poss.get(j).getj() + " " + poss.get(j).get_direction() + " ");
+//			}
+//			System.out.println();
+//		}
+//		
+//		set_piece(board, positions.get(7), 2);
+//		positions = legal_moves(board, player);
+//		
+//		for(int m = 0; m < board.length; m++){
+//			for(int n = 0; n < board[0].length; n++){
+//				System.out.print(board[m][n]);
+//			}
+//			System.out.println();
+//		}
+//		for(int i = 0; i < positions.size(); i++){
+//			Position p = positions.get(i);
+//			System.out.print(p.geti() + "," + p.getj() + "   ");
+//			ArrayList<Position> poss = p.get_legal_from();
+//			for(int j = 0; j < poss.size(); j++){
+//				System.out.print(poss.get(j).geti() + "," + poss.get(j).getj() + " " + poss.get(j).get_direction() + " ");
+//			}
+//			System.out.println();
+//		}
+//		
+//		set_piece(board, positions.get(3), player);
+//		positions = legal_moves(board, 2);
+//		
+//		for(int m = 0; m < board.length; m++){
+//			for(int n = 0; n < board[0].length; n++){
+//				System.out.print(board[m][n]);
+//			}
+//			System.out.println();
+//		}
+//		for(int i = 0; i < positions.size(); i++){
+//			Position p = positions.get(i);
+//			System.out.print(p.geti() + "," + p.getj() + "   ");
+//			ArrayList<Position> poss = p.get_legal_from();
+//			for(int j = 0; j < poss.size(); j++){
+//				System.out.print(poss.get(j).geti() + "," + poss.get(j).getj() + " " + poss.get(j).get_direction() + " ");
+//			}
+//			System.out.println();
+//		}
+//		
+//		set_piece(board, positions.get(7), 2);
+//		positions = legal_moves(board, player);
+//		
+//		for(int m = 0; m < board.length; m++){
+//			for(int n = 0; n < board[0].length; n++){
+//				System.out.print(board[m][n]);
+//			}
+//			System.out.println();
+//		}
+//		for(int i = 0; i < positions.size(); i++){
+//			Position p = positions.get(i);
+//			System.out.print(p.geti() + "," + p.getj() + "   ");
+//			ArrayList<Position> poss = p.get_legal_from();
+//			for(int j = 0; j < poss.size(); j++){
+//				System.out.print(poss.get(j).geti() + "," + poss.get(j).getj() + " " + poss.get(j).get_direction() + " ");
+//			}
+//			System.out.println();
+//		}
+		
 	}
 	
 	static void set_piece(int[][] board, Position position, int player){
@@ -58,28 +317,28 @@ public class Game {
 			String direction = cur.get_direction();
 			switch (direction) {
 				case "west": 
-					for(int j = cur.getj()-1; j > position.getj(); j--){
-						board[position.geti()][j] = player;
-					};
+					for(int j = 1; j < cur.getj() - position.getj(); j++){
+						board[cur.geti()][cur.getj()-j] = player;
+				 	};
 					break;
 				case "north_west": 
-					for(int j = cur.getj()-1; j > position.getj(); j--){
-						board[position.geti()+j][j] = player;
+					for(int j = 1; j < cur.getj() - position.getj(); j++){
+						board[cur.getj()-j][cur.getj()-j] = player;
 				 	};
 				 	break;
 				case "north": 
-					for(int j = cur.geti()-1; j > position.geti(); j--){
-						board[j][position.getj()] = player;
+					for(int j = 1; j < cur.geti() - position.geti(); j++){
+						board[cur.geti()-j][cur.getj()] = player;
 				 	};
 				 	break;
 				case "north_east": 
-					for(int j = cur.getj()+1; j < position.getj(); j++){
-						board[position.geti()-j][j] = player;
+					for(int j = 1; j < position.getj() - cur.getj(); j++){
+						board[cur.geti()-j][cur.getj()+j] = player;
 				 	};
 				 	break;
 				case "east": 
-					for(int j = cur.getj()+1; j < position.getj(); j++){
-						board[position.geti()][j] = player;
+					for(int j = 1; j < position.getj() - cur.getj(); j++){
+						board[cur.geti()][cur.getj()+j] = player;
 				 	};
 				 	break;
 				case "south_east": 
@@ -93,7 +352,7 @@ public class Game {
 				 	};
 				 	break;
 				case "south_west": 
-					for(int j = 1; j < position.getj() - cur.getj(); j++){
+					for(int j = 1; j < cur.getj() - position.getj(); j++){
 						board[cur.geti()+j][cur.getj()-j] = player;
 				 	};
 				 	break;
@@ -117,43 +376,75 @@ public class Game {
 					
 					p = check_west(board, opponent, i, j);
 					if(p.geti() != - 1){
-						p.insert_legal_from(new Position(i,j, "west"));
-						positions.add(p);
+						Position from = new Position(i,j, "west");
+						if(positions.contains(p)){
+							positions.get(positions.indexOf(p)).insert_legal_from(from);
+						} else {p.insert_legal_from(from);
+							positions.add(p);
+						}
 					}
 					p = check_north_west(board, opponent, i, j);
 					if(p.geti() != - 1){
-						p.insert_legal_from(new Position(i,j, "north_west"));
-						positions.add(p);
+						Position from = new Position(i,j, "north_west");
+						if(positions.contains(p)){
+							positions.get(positions.indexOf(p)).insert_legal_from(from);
+						} else {p.insert_legal_from(from);
+							positions.add(p);
+						}
 					}
 					p = check_north(board, opponent, i, j);
 					if(p.geti() != - 1){
-						p.insert_legal_from(new Position(i,j, "north"));
-						positions.add(p);
+						Position from = new Position(i,j, "north");
+						if(positions.contains(p)){
+							positions.get(positions.indexOf(p)).insert_legal_from(from);
+						} else {p.insert_legal_from(from);
+							positions.add(p);
+						}
 					}
 					p = check_north_east(board, opponent, i, j);
 					if(p.geti() != - 1){
-						p.insert_legal_from(new Position(i,j, "north_east"));
-						positions.add(p);
+						Position from = new Position(i,j, "north_east");
+						if(positions.contains(p)){
+							positions.get(positions.indexOf(p)).insert_legal_from(from);
+						} else {p.insert_legal_from(from);
+							positions.add(p);
+						}
 					}
 					p = check_east(board, opponent, i, j);
 					if(p.geti() != - 1){
-						p.insert_legal_from(new Position(i,j, "east"));
-						positions.add(p);
+						Position from = new Position(i,j, "east");
+						if(positions.contains(p)){
+							positions.get(positions.indexOf(p)).insert_legal_from(from);
+						} else {p.insert_legal_from(from);
+							positions.add(p);
+						}
 					}
 					p = check_south_east(board, opponent, i, j);
 					if(p.geti() != - 1){
-						p.insert_legal_from(new Position(i,j, "south_east"));
-						positions.add(p);
+						Position from = new Position(i,j, "south_east");
+						if(positions.contains(p)){
+							positions.get(positions.indexOf(p)).insert_legal_from(from);
+						} else {p.insert_legal_from(from);
+							positions.add(p);
+						}
 					}
 					p = check_south(board, opponent, i, j);
 					if(p.geti() != - 1){
-						p.insert_legal_from(new Position(i,j, "south"));
-						positions.add(p);
+						Position from = new Position(i,j, "south");
+						if(positions.contains(p)){
+							positions.get(positions.indexOf(p)).insert_legal_from(from);
+						} else {p.insert_legal_from(from);
+							positions.add(p);
+						}
 					}
 					p = check_south_west(board, opponent, i, j);
 					if(p.geti() != - 1){
-						p.insert_legal_from(new Position(i,j, "south_west"));
-						positions.add(p);
+						Position from = new Position(i,j, "south_west");
+						if(positions.contains(p)){
+							positions.get(positions.indexOf(p)).insert_legal_from(from);
+						} else {p.insert_legal_from(from);
+							positions.add(p);
+						}
 					}
 					
 //					Position p; 
