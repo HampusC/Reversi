@@ -5,6 +5,9 @@ import java.util.ArrayList;
 
 public class GUI implements ActionListener{
 
+	int black_boxes;
+	int white_boxes;
+	String points;
 	JFrame frame;
 	JButton[][] buttons;
 	Game game;
@@ -12,7 +15,10 @@ public class GUI implements ActionListener{
 	int current_player;
 
 	public GUI(Game game){
-		frame = new JFrame("Black's turn");
+		black_boxes = 2;
+		white_boxes = 2;
+		points = "Black: " + black_boxes + "  White: " + white_boxes;
+		frame = new JFrame("Black's turn.   " + points);
 		buttons = new JButton[8][8];
 		this.game = game;
 		current_legal_moves = new ArrayList<Position>();
@@ -49,32 +55,45 @@ public class GUI implements ActionListener{
 			}
 		}
 		game.set_piece(p, current_player);
+		points = "Black: " + black_boxes + "  White: " + white_boxes;
 		if(current_player == 1){
 			current_player = 2;
-			frame.setTitle("White's turn");
+			frame.setTitle("White's turn.   " + points);
 		} else {
 			current_player = 1;
-			frame.setTitle("Black's turn");
+			frame.setTitle("Black's turn.   " + points);
 		}
   }
 
 	public void updateGUI(int[][] board, ArrayList<Position> legal_moves){
 		current_legal_moves = legal_moves;
+		black_boxes = 0;
+		white_boxes = 0;
 		for(int i = 0; i < board.length; i++){
 			for(int j = 0; j < board[0].length; j++){
-				Color color = Color.GREEN;
+				Color color = Color.LIGHT_GRAY;
 				switch(board[i][j]){
 					case 0: break;
-					case 1: color = Color.BLACK; break;
-					case 2: color = Color.WHITE; break;
+					case 1: color = Color.BLACK; black_boxes++; break;
+					case 2: color = Color.WHITE; white_boxes++; break;
 				}
 				buttons[i][j].setBackground(color);
 				buttons[i][j].setEnabled(false);
 			}
 		}
 		for(int i = 0; i < legal_moves.size(); i++){
-			buttons[legal_moves.get(i).geti()][legal_moves.get(i).getj()].setBackground(Color.RED);
+			buttons[legal_moves.get(i).geti()][legal_moves.get(i).getj()].setBackground(Color.PINK);
 			buttons[legal_moves.get(i).geti()][legal_moves.get(i).getj()].setEnabled(true);
+		}
+		
+		if(black_boxes + white_boxes >= 64 || legal_moves.size() == 0){
+			if(black_boxes > white_boxes){
+				JOptionPane.showMessageDialog(null, "Black won!");
+			} else if(black_boxes < white_boxes){
+				JOptionPane.showMessageDialog(null, "White won!");
+			} else {
+				JOptionPane.showMessageDialog(null, "Tie!");
+			}
 		}
 	}
 

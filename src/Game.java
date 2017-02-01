@@ -10,7 +10,7 @@ public class Game {
 		board = new int[8][8];
 	}
 
-	public void run(){
+	public void set_up(){
 
 		gui.makeGUI();
 
@@ -18,28 +18,12 @@ public class Game {
 		board[3][4] = 1;
 		board[4][3] = 1;
 		board[4][4] = 2;
-		int round = 1;
-
-		gui.updateGUI(board, new ArrayList<Position>());
-
-		while(round < 2){ //32
-			if(round % 2 == 0){
-				turn(2);
-			} else {
-				turn(1);
-			}
-			round++;
-		}
-
-
-
-	}
-
-	public void turn(int player){
-		ArrayList<Position> positions = legal_moves(player);
+		int starting_player = 1;
+		
+		ArrayList<Position> positions = legal_moves(starting_player);
 		gui.updateGUI(board, positions);
-
 	}
+
 
 	public void set_piece(Position position, int player){
 		board[position.geti()][position.getj()] = player;
