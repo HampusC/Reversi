@@ -54,16 +54,26 @@ public class GUI implements ActionListener{
 				p = current_legal_moves.get(k);
 			}
 		}
-		game.set_piece(p, current_player);
-		points = "Black: " + black_boxes + "  White: " + white_boxes;
-		if(current_player == 1){
-			current_player = 2;
-			frame.setTitle("White's turn.   " + points);
-		} else {
-			current_player = 1;
-			frame.setTitle("Black's turn.   " + points);
+		boolean set = game.set_piece(p, current_player);
+		if(set){
+			points = "Black: " + black_boxes + "  White: " + white_boxes;
+			if(current_player == 1){
+				current_player = 2;
+				frame.setTitle("White's turn.   " + points);
+				game.execute_ai();
+			} else {
+				current_player = 1;
+				frame.setTitle("Black's turn.   " + points);
+			}
 		}
-  }
+		
+	}
+
+	public void force_click(Position pos) {
+		int i = pos.geti();
+		int j = pos.getj();
+		buttons[i][j].doClick();
+	}
 
 	public void updateGUI(int[][] board, ArrayList<Position> legal_moves){
 		current_legal_moves = legal_moves;
@@ -96,5 +106,6 @@ public class GUI implements ActionListener{
 			}
 		}
 	}
+
 
 }
