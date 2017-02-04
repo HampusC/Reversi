@@ -4,12 +4,12 @@ public class Game {
 
 	GUI gui;
 	int[][] board;
-	AI ai;
+	AI2 ai;
 
 	public Game(){
 		gui = new GUI(this);
 		board = new int[8][8];
-		ai = new AI();
+		ai = new AI2();
 	}
 
 	public void set_up(){
@@ -70,7 +70,7 @@ public class Game {
 				ai_board[i][j] = board[i][j];
 			}
 		}
-		Position pos = ai.execute_move(ai_board, legal_moves);
+		Position pos = ai.execute_move(ai_board);
 		gui.force_click(pos);
 	}
 
