@@ -15,15 +15,15 @@ public class Game {
 	public void set_up(){
 
 		gui.makeGUI();
-		
-		
+
+
 
 		board[3][3] = 2;
 		board[3][4] = 1;
 		board[4][3] = 1;
 		board[4][4] = 2;
 		int starting_player = 1;
-		
+
 		ArrayList<Position> positions = legal_moves(board, starting_player);
 		gui.updateGUI(board, positions);
 	}
@@ -33,7 +33,7 @@ public class Game {
 		board[position.geti()][position.getj()] = player;
 		ArrayList<Position> legal_from = position.get_legal_from();
 		flip(board, position, player, legal_from);
-		
+
 		int opponent;
 		if(player==1){
 			opponent=2;
@@ -48,20 +48,20 @@ public class Game {
 			gui.updateGUI(board, legal_moves);
 			return false;
 		}
-		
+
 		gui.updateGUI(board, legal_moves);
-		
+
 		return true;
-		
+
 	}
-	
+
 	static int set_piece_ai(int[][] ai_board, Position position, int player){
 		ai_board[position.geti()][position.getj()] = player;
 		ArrayList<Position> legal_from = position.get_legal_from();
 		int flipped = flip(ai_board, position, player, legal_from);
 		return flipped;
 	}
-	
+
 	public void execute_ai() {
 		ArrayList<Position> legal_moves = legal_moves(board, 2);
 		int[][] ai_board = new int[board.length][board[0].length];
@@ -128,7 +128,7 @@ public class Game {
 						flipped++;
 				 	};
 				 	break;
-			}	
+			}
 		}
 		return flipped;
 	}
