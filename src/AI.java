@@ -57,5 +57,6 @@ public class AI {
 		}
 		return 0;
 	}
+	//test
 
 }
