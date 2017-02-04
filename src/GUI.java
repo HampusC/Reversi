@@ -60,18 +60,31 @@ public class GUI implements ActionListener{
 			if(current_player == 1){
 				current_player = 2;
 				frame.setTitle("White's turn.   " + points);
-				game.execute_ai();
+				SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+					@Override
+					public Void doInBackground() {
+						for(int l = 0; l < current_legal_moves.size(); l++){
+							buttons[current_legal_moves.get(l).geti()][current_legal_moves.get(l).getj()].setEnabled(false);
+							buttons[current_legal_moves.get(l).geti()][current_legal_moves.get(l).getj()].setBackground(Color.ORANGE);
+						}
+						game.execute_ai();
+						return null;
+					}
+				};
+				worker.execute();
+
 			} else {
 				current_player = 1;
 				frame.setTitle("Black's turn.   " + points);
 			}
 		}
-		
+
 	}
 
 	public void force_click(Position pos) {
 		int i = pos.geti();
 		int j = pos.getj();
+		buttons[i][j].setEnabled(true);
 		buttons[i][j].doClick();
 	}
 
@@ -95,7 +108,7 @@ public class GUI implements ActionListener{
 			buttons[legal_moves.get(i).geti()][legal_moves.get(i).getj()].setBackground(Color.PINK);
 			buttons[legal_moves.get(i).geti()][legal_moves.get(i).getj()].setEnabled(true);
 		}
-		
+
 		if(black_boxes + white_boxes >= 64 || legal_moves.size() == 0){
 			if(black_boxes > white_boxes){
 				JOptionPane.showMessageDialog(null, "Black won!");
