@@ -95,7 +95,6 @@ public class GUI implements ActionListener{
 			buttons[legal_moves.get(i).geti()][legal_moves.get(i).getj()].setBackground(Color.PINK);
 			buttons[legal_moves.get(i).geti()][legal_moves.get(i).getj()].setEnabled(true);
 		}
-		
 		if(black_boxes + white_boxes >= 64 || legal_moves.size() == 0){
 			if(black_boxes > white_boxes){
 				JOptionPane.showMessageDialog(null, "Black won!");

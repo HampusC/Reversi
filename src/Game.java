@@ -5,11 +5,13 @@ public class Game {
 	GUI gui;
 	int[][] board;
 	AI ai;
+	double time;
 
-	public Game(){
+	public Game(double time){
 		gui = new GUI(this);
 		board = new int[8][8];
 		ai = new AI();
+		this.time = time;
 	}
 
 	public void set_up(){
@@ -43,14 +45,12 @@ public class Game {
 
 		ArrayList<Position> legal_moves = legal_moves(board, opponent);
 		if(legal_moves.size() == 0){
-			System.out.println("you are doomed");
 			legal_moves = legal_moves(board, player);
 			gui.updateGUI(board, legal_moves);
 			return false;
 		}
 
 		gui.updateGUI(board, legal_moves);
-
 		return true;
 
 	}
@@ -63,14 +63,15 @@ public class Game {
 	}
 
 	public void execute_ai() {
-		ArrayList<Position> legal_moves = legal_moves(board, 2);
+		//ArrayList<Position> legal_moves = legal_moves(board, 2);
+		//gui.updateGUI(board, legal_moves);
 		int[][] ai_board = new int[board.length][board[0].length];
 		for(int i = 0 ; i < ai_board.length; i++){
 			for(int j = 0; j < ai_board[0].length; j++){
 				ai_board[i][j] = board[i][j];
 			}
 		}
-		Position pos = ai.execute_move(ai_board, legal_moves);
+		Position pos = ai.execute_move(ai_board, time);
 		gui.force_click(pos);
 	}
 
