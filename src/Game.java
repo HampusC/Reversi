@@ -2,34 +2,29 @@ import java.util.ArrayList;
 
 public class Game {
 
+	int BLACK_PLAYER = 1;
+	int WHITE_PLAYER = 2;
 	GUI gui;
 	int[][] board;
-	AIAlphaBeta ai;
-	double time;
+	AI ai;
 
 	public Game(double time){
 		gui = new GUI(this);
 		board = new int[8][8];
-		ai = new AIAlphaBeta();
-		this.time = time;
+		ai = new AI(time);
 	}
 
 	public void set_up(){
-
 		gui.makeGUI();
-
-
-
 		board[3][3] = 2;
 		board[3][4] = 1;
 		board[4][3] = 1;
 		board[4][4] = 2;
-		int starting_player = 1;
+		int starting_player = BLACK_PLAYER;
 
 		ArrayList<Position> positions = legal_moves(board, starting_player);
-		gui.updateGUI(board, positions);
+		gui.updateGUI(board, positions, false);
 	}
-
 
 	public boolean set_piece(Position position, int player){
 		board[position.geti()][position.getj()] = player;
@@ -37,46 +32,29 @@ public class Game {
 		flip(board, position, player, legal_from);
 
 		int opponent;
-		if(player==1){
-			opponent=2;
+		if(player==BLACK_PLAYER){
+			opponent=WHITE_PLAYER;
 		}else{
-			opponent=1;
+			opponent=BLACK_PLAYER;
 		}
 
 		ArrayList<Position> legal_moves = legal_moves(board, opponent);
 		if(legal_moves.size() == 0){
 			legal_moves = legal_moves(board, player);
-			gui.updateGUI(board, legal_moves);
+			gui.updateGUI(board, legal_moves, false);
 			return false;
 		}
-
-		gui.updateGUI(board, legal_moves);
+		gui.updateGUI(board, legal_moves, true);
 		return true;
-
-	}
-
-	static int set_piece_ai(int[][] ai_board, Position position, int player){
-		ai_board[position.geti()][position.getj()] = player;
-		ArrayList<Position> legal_from = position.get_legal_from();
-		int flipped = flip(ai_board, position, player, legal_from);
-		return flipped;
 	}
 
 	public void execute_ai() {
-		//ArrayList<Position> legal_moves = legal_moves(board, 2);
-		//gui.updateGUI(board, legal_moves);
-		int[][] ai_board = new int[board.length][board[0].length];
-		for(int i = 0 ; i < ai_board.length; i++){
-			for(int j = 0; j < ai_board[0].length; j++){
-				ai_board[i][j] = board[i][j];
-			}
-		}
-		Position pos = ai.execute_move(ai_board, time);
+		int[][] ai_board = copy_board(board);
+		Position pos = ai.execute_move(ai_board);
 		gui.force_click(pos);
 	}
 
-	static int flip(int[][] board, Position position, int player, ArrayList<Position> legal_from) {
-		int flipped = 0;
+	public static void flip(int[][] board, Position position, int player, ArrayList<Position> legal_from) {
 		for(int i = 0; i < legal_from.size(); i++){
 			Position cur = legal_from.get(i);
 			String direction = cur.get_direction();
@@ -84,68 +62,60 @@ public class Game {
 				case "west":
 					for(int j = 1; j < cur.getj() - position.getj(); j++){
 						board[cur.geti()][cur.getj()-j] = player;
-						flipped++;
 				 	};
 					break;
 				case "north_west":
 					for(int j = 1; j < cur.getj() - position.getj(); j++){
 						board[cur.geti()-j][cur.getj()-j] = player;
-						flipped++;
 				 	};
 				 	break;
 				case "north":
 					for(int j = 1; j < cur.geti() - position.geti(); j++){
 						board[cur.geti()-j][cur.getj()] = player;
-						flipped++;
 				 	};
 				 	break;
 				case "north_east":
 					for(int j = 1; j < position.getj() - cur.getj(); j++){
 						board[cur.geti()-j][cur.getj()+j] = player;
-						flipped++;
 				 	};
 				 	break;
 				case "east":
 					for(int j = 1; j < position.getj() - cur.getj(); j++){
 						board[cur.geti()][cur.getj()+j] = player;
-						flipped++;
 				 	};
 				 	break;
 				case "south_east":
 					for(int j = 1; j < position.getj() - cur.getj(); j++){
 						board[cur.geti()+j][cur.getj()+j] = player;
-						flipped++;
 				 	};
 				 	break;
 				case "south":
 					for(int j = 1; j < position.geti() - cur.geti(); j++){
 						board[cur.geti()+j][cur.getj()] = player;
-						flipped++;
 				 	};
 				 	break;
 				case "south_west":
 					for(int j = 1; j < cur.getj() - position.getj(); j++){
 						board[cur.geti()+j][cur.getj()-j] = player;
-						flipped++;
 				 	};
 				 	break;
 			}
 		}
-		return flipped;
 	}
 
-	static ArrayList<Position> legal_moves(int[][] board, int player){
+	public static ArrayList<Position> legal_moves(int[][] board, int player){
+		int BLACK_PLAYER = 1;
+		int WHITE_PLAYER = 2;
 		ArrayList<Position> positions = new ArrayList<Position>();
 		int opponent;
-		if(player==1){
-			opponent=2;
+		if(player==BLACK_PLAYER){
+			opponent=WHITE_PLAYER;
 		}else{
-			opponent=1;
+			opponent=BLACK_PLAYER;
 		}
 		for(int i = 0; i < board.length; i++){
 			for(int j = 0; j < board[0].length; j++){
 				if(board[i][j] == player){
-
 					Position p;
 
 					p = check_west(board, opponent, i, j);
@@ -220,16 +190,13 @@ public class Game {
 							positions.add(p);
 						}
 					}
-
-
 				}
 			}
 		}
-
 		return positions;
 	}
 
-	public static Position check_west(int[][] board, int opponent, int i, int j){
+	private static Position check_west(int[][] board, int opponent, int i, int j){
 		Position position = new Position(-1,-1);
 		int counter = 1;
 		if(j-counter < 0){
@@ -255,7 +222,7 @@ public class Game {
 		return position;
 	}
 
-	public static Position check_north_west(int[][] board, int opponent, int i, int j){
+	private static Position check_north_west(int[][] board, int opponent, int i, int j){
 		Position position = new Position(-1,-1);
 		int counter = 1;
 		if(i-counter < 0 || j-counter < 0){
@@ -281,7 +248,7 @@ public class Game {
 		return position;
 	}
 
-	public static Position check_north(int[][] board, int opponent, int i, int j){
+	private static Position check_north(int[][] board, int opponent, int i, int j){
 		Position position = new Position(-1,-1);
 		int counter = 1;
 		if(i-counter < 0){
@@ -307,7 +274,7 @@ public class Game {
 		return position;
 	}
 
-	public static Position check_north_east(int[][] board, int opponent, int i, int j){
+	private static Position check_north_east(int[][] board, int opponent, int i, int j){
 		Position position = new Position(-1,-1);
 		int counter = 1;
 		if(i-counter < 0 || j+counter > 7){
@@ -333,7 +300,7 @@ public class Game {
 		return position;
 	}
 
-	public static Position check_east(int[][] board, int opponent, int i, int j){
+	private static Position check_east(int[][] board, int opponent, int i, int j){
 		Position position = new Position(-1,-1);
 		int counter = 1;
 		if(j+counter > 7){
@@ -359,7 +326,7 @@ public class Game {
 		return position;
 	}
 
-	public static Position check_south_east(int[][] board, int opponent, int i, int j){
+	private static Position check_south_east(int[][] board, int opponent, int i, int j){
 		Position position = new Position(-1,-1);
 		int counter = 1;
 		if(i+counter > 7 || j+counter > 7){
@@ -385,7 +352,7 @@ public class Game {
 		return position;
 	}
 
-	public static Position check_south(int[][] board, int opponent, int i, int j){
+	private static Position check_south(int[][] board, int opponent, int i, int j){
 		Position position = new Position(-1,-1);
 		int counter = 1;
 		if(i+counter > 7){
@@ -411,7 +378,7 @@ public class Game {
 		return position;
 	}
 
-	public static Position check_south_west(int[][] board, int opponent, int i, int j){
+	private static Position check_south_west(int[][] board, int opponent, int i, int j){
 		Position position = new Position(-1,-1);
 		int counter = 1;
 		if(i+counter > 7 || j-counter < 0){
@@ -436,5 +403,15 @@ public class Game {
 		}
 		return position;
 	}
+
+	public static int[][] copy_board(int[][] board){
+    int[][] copied_board = new int[board.length][board[0].length];
+    for(int i = 0 ; i < copied_board.length; i++){
+      for(int j = 0; j < copied_board[0].length; j++){
+        copied_board[i][j] = board[i][j];
+      }
+    }
+    return copied_board;
+  }
 
 }

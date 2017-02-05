@@ -5,9 +5,10 @@ import java.util.ArrayList;
 
 public class GUI implements ActionListener{
 
+	int BLACK_PLAYER = 1;
+	int WHITE_PLAYER = 2;
 	int black_boxes;
 	int white_boxes;
-	String points;
 	JFrame frame;
 	JButton[][] buttons;
 	Game game;
@@ -17,12 +18,11 @@ public class GUI implements ActionListener{
 	public GUI(Game game){
 		black_boxes = 2;
 		white_boxes = 2;
-		points = "Black: " + black_boxes + "  White: " + white_boxes;
-		frame = new JFrame("Black's turn.   " + points);
+		frame = new JFrame();
 		buttons = new JButton[8][8];
 		this.game = game;
 		current_legal_moves = new ArrayList<Position>();
-		current_player = 1;
+		current_player = BLACK_PLAYER;
 	};
 
 	public void makeGUI(){
@@ -38,7 +38,6 @@ public class GUI implements ActionListener{
 				frame.add(buttons[i][j]);
 			}
 		}
-	 	frame.setSize(1000,400);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
@@ -56,29 +55,24 @@ public class GUI implements ActionListener{
 		}
 		boolean set = game.set_piece(p, current_player);
 		if(set){
-			points = "Black: " + black_boxes + "  White: " + white_boxes;
-			if(current_player == 1){
-				current_player = 2;
-				frame.setTitle("White's turn.   " + points);
+			if(current_player == BLACK_PLAYER){
+				current_player = WHITE_PLAYER;
+				for(int l = 0; l < current_legal_moves.size(); l++){
+					buttons[current_legal_moves.get(l).geti()][current_legal_moves.get(l).getj()].setEnabled(false);
+					buttons[current_legal_moves.get(l).geti()][current_legal_moves.get(l).getj()].setBackground(Color.ORANGE);
+				}
 				SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 					@Override
 					public Void doInBackground() {
-						for(int l = 0; l < current_legal_moves.size(); l++){
-							buttons[current_legal_moves.get(l).geti()][current_legal_moves.get(l).getj()].setEnabled(false);
-							buttons[current_legal_moves.get(l).geti()][current_legal_moves.get(l).getj()].setBackground(Color.ORANGE);
-						}
 						game.execute_ai();
 						return null;
 					}
 				};
 				worker.execute();
-
 			} else {
-				current_player = 1;
-				frame.setTitle("Black's turn.   " + points);
+				current_player = BLACK_PLAYER;
 			}
 		}
-
 	}
 
 	public void force_click(Position pos) {
@@ -88,7 +82,7 @@ public class GUI implements ActionListener{
 		buttons[i][j].doClick();
 	}
 
-	public void updateGUI(int[][] board, ArrayList<Position> legal_moves){
+	public void updateGUI(int[][] board, ArrayList<Position> legal_moves, boolean change_player){
 		current_legal_moves = legal_moves;
 		black_boxes = 0;
 		white_boxes = 0;
@@ -109,6 +103,21 @@ public class GUI implements ActionListener{
 			buttons[legal_moves.get(i).geti()][legal_moves.get(i).getj()].setEnabled(true);
 		}
 
+		String points = "Black: " + black_boxes + "  White: " + white_boxes;
+		if(change_player){
+			if(current_player == BLACK_PLAYER){
+				frame.setTitle("White's turn.   " + points);
+			} else {
+				frame.setTitle("Black's turn.   " + points);
+			}
+		} else {
+			if(current_player == BLACK_PLAYER){
+				frame.setTitle("Black's turn.   " + points);
+			} else {
+				frame.setTitle("White's turn.   " + points);
+			}
+		}
+
 		if(black_boxes + white_boxes >= 64 || legal_moves.size() == 0){
 			if(black_boxes > white_boxes){
 				JOptionPane.showMessageDialog(null, "Black won!");
@@ -119,6 +128,5 @@ public class GUI implements ActionListener{
 			}
 		}
 	}
-
 
 }
