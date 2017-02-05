@@ -16,9 +16,7 @@ public class AI {
 		level = 2;
     double cur_time = System.currentTimeMillis();
 		while(System.currentTimeMillis() - cur_time < time*1000){
-
 			best_move = alpha_beta_decision(ai_board, level);
-
 			level++;
 		}
 		return best_move;
