@@ -2,94 +2,82 @@ import java.util.ArrayList;
 
 public class AI {
 
+  int BLACK_PLAYER = 1;
+  int WHITE_PLAYER = 2;
   int level;
+  double time;
 
-	public AI(){}
+	public AI(double time){
+    this.time = time;
+  }
 
-	public Position execute_move(int[][] ai_board, double time) {
-
+	public Position execute_move(int[][] ai_board) {
     Position best_move = null;
 		level = 2;
     double cur_time = System.currentTimeMillis();
 		while(System.currentTimeMillis() - cur_time < time*1000){
-      //System.out.println(System.currentTimeMillis() - cur_time);
-      //System.out.println(time/1000);
-			best_move = minimax(ai_board, level);
+
+			best_move = alpha_beta_decision(ai_board, level);
+
 			level++;
 		}
 		return best_move;
-
 	}
 
-	private Position minimax(int[][] ai_board, int starting_level){
-
+	private Position alpha_beta_decision(int[][] ai_board, int starting_level){
     Position result = null;
     int max = Integer.MIN_VALUE;
-    ArrayList<Position> legal_moves = Game.legal_moves(ai_board, 2);
+    ArrayList<Position> legal_moves = Game.legal_moves(ai_board, WHITE_PLAYER);
     for(int k = 0; k < legal_moves.size(); k++){
-
-      int[][] new_ai_board = new int[ai_board.length][ai_board[0].length];
-      for(int i = 0 ; i < new_ai_board.length; i++){
-        for(int j = 0; j < new_ai_board[0].length; j++){
-          new_ai_board[i][j] = ai_board[i][j];
-        }
-      }
-      Game.set_piece_ai(new_ai_board, legal_moves.get(k), 2);
-      int cur_value = min_value(new_ai_board, starting_level-1);
+      int[][] new_ai_board = Game.copy_board(ai_board);
+      set_piece_ai(new_ai_board, legal_moves.get(k), WHITE_PLAYER);
+      int cur_value = min_value(new_ai_board, Integer.MIN_VALUE, Integer.MAX_VALUE, starting_level-1);
       if(cur_value > max){
         max = cur_value;
         result = legal_moves.get(k);
       }
     }
     return result;
-
 	}
 
-	private int max_value(int[][] ai_board, int cur_level){
+	private int max_value(int[][] ai_board, int alpha, int beta, int cur_level){
     if(cur_level == level){
-      return evaluate_board(ai_board, 2);
+      return evaluate_board(ai_board, WHITE_PLAYER);
     }
-
     int max = Integer.MIN_VALUE;
-    ArrayList<Position> legal_moves = Game.legal_moves(ai_board, 2);
+    ArrayList<Position> legal_moves = Game.legal_moves(ai_board, WHITE_PLAYER);
     for(int k = 0; k < legal_moves.size(); k++){
-
-      int[][] new_ai_board = new int[ai_board.length][ai_board[0].length];
-      for(int i = 0 ; i < new_ai_board.length; i++){
-        for(int j = 0; j < new_ai_board[0].length; j++){
-          new_ai_board[i][j] = ai_board[i][j];
-        }
-      }
-      Game.set_piece_ai(new_ai_board, legal_moves.get(k), 2);
-      int cur_value = min_value(new_ai_board, cur_level+1);
+      int[][] new_ai_board = Game.copy_board(ai_board);
+      set_piece_ai(new_ai_board, legal_moves.get(k), WHITE_PLAYER);
+      int cur_value = min_value(new_ai_board, alpha, beta, cur_level+1);
       if(cur_value > max){
         max = cur_value;
       }
+      if(max >= beta){
+        return max;
+      }
+      alpha = Math.max(alpha,max);
     }
     return max;
   }
 
-
-
-	private int min_value(int[][] ai_board, int cur_level){
+	private int min_value(int[][] ai_board, int alpha, int beta, int cur_level){
     if(cur_level == level){
-      return evaluate_board(ai_board, 1);
+      return evaluate_board(ai_board, BLACK_PLAYER);
     }
     int min = Integer.MAX_VALUE;
-    ArrayList<Position> legal_moves = Game.legal_moves(ai_board, 1);
+    ArrayList<Position> legal_moves = Game.legal_moves(ai_board, BLACK_PLAYER);
     for(int k = 0; k < legal_moves.size(); k++){
-
-      int[][] new_ai_board = new int[ai_board.length][ai_board[0].length];
-      for(int i = 0 ; i < new_ai_board.length; i++){
-        for(int j = 0; j < new_ai_board[0].length; j++){
-          new_ai_board[i][j] = ai_board[i][j];
-        }
-      }
-      Game.set_piece_ai(new_ai_board, legal_moves.get(k), 1);
-      int cur_value = max_value(new_ai_board, cur_level+1);
+      int[][] new_ai_board = Game.copy_board(ai_board);
+      set_piece_ai(new_ai_board, legal_moves.get(k), BLACK_PLAYER);
+      int cur_value = max_value(new_ai_board, alpha, beta, cur_level+1);
       if(cur_value < min){
         min = cur_value;
       }
+      if(min <= alpha){
+        return min;
+      }
+      beta = Math.min(beta, min);
     }
     return min;
 	}
@@ -105,4 +93,11 @@ public class AI {
     }
     return sum;
   }
+
+  static void set_piece_ai(int[][] ai_board, Position position, int player){
+		ai_board[position.geti()][position.getj()] = player;
+		ArrayList<Position> legal_from = position.get_legal_from();
+		Game.flip(ai_board, position, player, legal_from);
+	}
+
 }
