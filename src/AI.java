@@ -12,10 +12,11 @@ public class AI {
 		level = 2;
     double cur_time = System.currentTimeMillis();
 		while(System.currentTimeMillis() - cur_time < time*1000){
+      //System.out.println(System.currentTimeMillis() - cur_time);
+      //System.out.println(time/1000);
 			best_move = minimax(ai_board, level);
 			level++;
 		}
-    System.out.println(level);
 		return best_move;
 
 	}

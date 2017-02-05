@@ -4,13 +4,13 @@ public class Game {
 
 	GUI gui;
 	int[][] board;
-	AIAlphaBeta ai;
+	AI ai;
 	double time;
 
 	public Game(double time){
 		gui = new GUI(this);
 		board = new int[8][8];
-		ai = new AIAlphaBeta();
+		ai = new AI();
 		this.time = time;
 	}
 
