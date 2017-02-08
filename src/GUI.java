@@ -57,22 +57,31 @@ public class GUI implements ActionListener{
 		if(set){
 			if(current_player == BLACK_PLAYER){
 				current_player = WHITE_PLAYER;
-				for(int l = 0; l < current_legal_moves.size(); l++){
-					buttons[current_legal_moves.get(l).geti()][current_legal_moves.get(l).getj()].setEnabled(false);
-					buttons[current_legal_moves.get(l).geti()][current_legal_moves.get(l).getj()].setBackground(Color.ORANGE);
-				}
-				SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
-					@Override
-					public Void doInBackground() {
-						game.execute_ai();
-						return null;
-					}
-				};
-				worker.execute();
+				AI_plays();
 			} else {
 				current_player = BLACK_PLAYER;
 			}
 		}
+		else {
+			if(current_player == WHITE_PLAYER){
+				AI_plays();
+			}
+		}
+	}
+	
+	public void AI_plays(){
+		for(int l = 0; l < current_legal_moves.size(); l++){
+			buttons[current_legal_moves.get(l).geti()][current_legal_moves.get(l).getj()].setEnabled(false);
+			buttons[current_legal_moves.get(l).geti()][current_legal_moves.get(l).getj()].setBackground(Color.ORANGE);
+		}
+		SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+			@Override
+			public Void doInBackground() {
+				game.execute_ai();
+				return null;
+			}
+		};
+		worker.execute();
 	}
 
 	public void force_click(Position pos) {

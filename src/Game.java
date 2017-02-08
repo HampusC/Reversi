@@ -6,12 +6,12 @@ public class Game {
 	int WHITE_PLAYER = 2;
 	GUI gui;
 	int[][] board;
-	AI ai;
+	double time;
 
 	public Game(double time){
 		gui = new GUI(this);
 		board = new int[8][8];
-		ai = new AI(time);
+		this.time = time;
 	}
 
 	public void set_up(){
@@ -49,8 +49,19 @@ public class Game {
 	}
 
 	public void execute_ai() {
+		AI ai;
 		int[][] ai_board = copy_board(board);
-		Position pos = ai.execute_move(ai_board);
+		ai = new AI(time);
+		ai.send_AI_board(ai_board);
+		Position pos = null;
+		ai.start();
+		try {
+			ai.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		ai.interrupt();
+		pos = ai.get_best_move();
 		gui.force_click(pos);
 	}
 
